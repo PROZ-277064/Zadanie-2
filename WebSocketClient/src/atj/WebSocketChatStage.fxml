@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="498.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="atj.WebSocketChatStageControler">
+   <children>
+      <GridPane layoutX="183.0" layoutY="179.0" prefHeight="498.0" prefWidth="566.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="129.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="357.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="76.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="160.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="464.0" minHeight="10.0" prefHeight="424.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="btnSet" mnemonicParsing="false" onAction="#btnSet_Click" text="Set" GridPane.columnIndex="2" />
+            <Button fx:id="btnSend" mnemonicParsing="false" onAction="#btnSend_Click" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea fx:id="chatTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="userTextField" GridPane.columnIndex="1" />
+            <TextField fx:id="messageTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
