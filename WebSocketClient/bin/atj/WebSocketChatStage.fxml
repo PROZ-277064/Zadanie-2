@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,25 +11,68 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="498.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="atj.WebSocketChatStageControler">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="atj.WebSocketChatStageControler">
    <children>
-      <GridPane layoutX="183.0" layoutY="179.0" prefHeight="498.0" prefWidth="566.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane layoutX="183.0" layoutY="179.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="129.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="357.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="76.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="400.0" prefWidth="400.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="160.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="464.0" minHeight="10.0" prefHeight="424.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="200.0" prefHeight="420.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnSet" mnemonicParsing="false" onAction="#btnSet_Click" text="Set" GridPane.columnIndex="2" />
-            <Button fx:id="btnSend" mnemonicParsing="false" onAction="#btnSend_Click" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextArea fx:id="chatTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="userTextField" GridPane.columnIndex="1" />
-            <TextField fx:id="messageTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="btnSet" alignment="CENTER" mnemonicParsing="false" onAction="#btnSet_Click" prefHeight="26.0" prefWidth="216.0" text="Set" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin></Button>
+            <Button fx:id="btnSend" alignment="CENTER" mnemonicParsing="false" onAction="#btnSend_Click" prefHeight="40.0" prefWidth="297.0" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin></Button>
+            <TextArea fx:id="chatTextArea" editable="false" prefHeight="436.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+            <TextField fx:id="userTextField" onKeyReleased="#userTextField_EnterPressed" prefHeight="79.0" prefWidth="400.0" promptText="Username" text="Guest" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="messageTextField" onKeyReleased="#messageTextField_EnterPressed" prefHeight="145.0" prefWidth="400.0" promptText="Type here" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </GridPane.margin></TextField>
+            <Label prefHeight="37.0" prefWidth="156.0" text="User: ">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin></Label>
+            <Label prefHeight="420.0" prefWidth="113.0" text="Chat:" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label contentDisplay="CENTER" prefHeight="114.0" prefWidth="100.0" text="Message:" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <ListView fx:id="fileListView" onMouseClicked="#fileListView_Click" prefHeight="270.0" prefWidth="115.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </ListView>
+            <Label prefHeight="16.0" prefWidth="168.0" text="List of files:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Button fx:id="btnUpload" mnemonicParsing="false" onAction="#btnUpload_Click" prefHeight="26.0" prefWidth="258.0" text="Upload file" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Button>
          </children>
       </GridPane>
    </children>
