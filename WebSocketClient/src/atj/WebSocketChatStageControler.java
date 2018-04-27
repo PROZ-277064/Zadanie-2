@@ -127,7 +127,6 @@ public class WebSocketChatStageControler {
 				byte[] tmp_buffer = new byte[1024 - 255];
 
 				System.arraycopy(filename.getBytes(), 0, buffer, 0, filename.getBytes().length);
-				buffer[filename.getBytes().length] = '\0';
 
 				int read;
 				while ((read = input.read(tmp_buffer)) > 0) {
