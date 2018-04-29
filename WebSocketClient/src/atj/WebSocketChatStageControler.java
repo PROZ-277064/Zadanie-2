@@ -120,7 +120,6 @@ public class WebSocketChatStageControler {
 				String filename = selectedFile.getName();
 				System.out.println("File " + filename + " is being uploaded...");
 
-				webSocketClient.sendFilename(filename);
 				InputStream input = new FileInputStream(selectedFile);
 
 				byte[] buffer = new byte[1024];
@@ -142,6 +141,7 @@ public class WebSocketChatStageControler {
 				input.close();
 
 				System.out.println("File " + filename + " uploaded!");
+				webSocketClient.sendFilename(filename);
 			} catch (IOException e) {
 				e.printStackTrace();
 
@@ -153,33 +153,57 @@ public class WebSocketChatStageControler {
 
 	@FXML
 	public void fileListView_Click() {
-
 		Integer fileIndex = fileListView.getSelectionModel().getSelectedIndex();
 
 		if (fileIndex < 0)
 			return;
 
 		String filename = fileListView.getSelectionModel().getSelectedItem();
-
+		
+		fileListView.getSelectionModel().clearSelection();
+		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialFileName(filename);
 		File file = fileChooser.showSaveDialog(null);
-		if (file != null) {
-			try {
-				InputStream initialStream = new FileInputStream(filename);
-				byte[] buffer = new byte[initialStream.available()];
-				initialStream.read(buffer);
-				OutputStream outStream = new FileOutputStream(file);
-				outStream.write(buffer);
-				outStream.close();
-				initialStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		fileListView.getSelectionModel().clearSelection();
+		
+		SaveFileThread saveFileThread = new SaveFileThread( file, filename );
+		saveFileThread.start();
+		
 	}
-
+	
+	class SaveFileThread extends Thread {
+		private File file;
+		private String originalFilename;
+		
+		SaveFileThread( File file, String originalFilename ) {
+			this.file = file;
+			this.originalFilename = originalFilename;
+		}
+		
+		public void run() {			
+			
+			if (file != null) {
+				try {
+					InputStream initialStream = new FileInputStream(webSocketClient.session.getId() + "/" + originalFilename);
+									
+					OutputStream outStream = new FileOutputStream(file);
+					byte[] buffer = new byte[1024*1024];
+					int read;
+					while( (read = initialStream.read(buffer)) > 0 ) {
+						outStream.write(buffer, 0, read);
+					}
+					outStream.close();
+					initialStream.close();
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			System.out.println("File " + originalFilename + " saved as " + file.getName());
+		}
+	}
+	
 	public void closeSession(CloseReason closeReason) {
 		try {
 			webSocketClient.session.close(closeReason);
