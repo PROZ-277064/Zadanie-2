@@ -44,6 +44,7 @@ public class WebSocketEndpoint {
 
 	@OnMessage
 	public void onMessage(ByteBuffer buf, boolean last, Session session) {
+		System.out.println("File. Buffer capacity: " + buf.capacity());
 		try {
 			for (Session oneSession : session.getOpenSessions()) {
 				if (oneSession.isOpen()) {

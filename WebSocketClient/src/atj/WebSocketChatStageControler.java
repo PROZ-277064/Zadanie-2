@@ -126,18 +126,18 @@ public class WebSocketChatStageControler {
 				byte[] tmp_buffer = new byte[1024 - 255];
 
 				System.arraycopy(filename.getBytes(), 0, buffer, 0, filename.getBytes().length);
-
+				OutputStream output = webSocketClient.session.getBasicRemote().getSendStream();
 				int read;
 				while ((read = input.read(tmp_buffer)) > 0) {
 					System.arraycopy(tmp_buffer, 0, buffer, 255, read);
 
 					mutexSend.acquire();
-					OutputStream output = webSocketClient.session.getBasicRemote().getSendStream();
+					
 					output.write(buffer, 0, 255 + read);
-					output.close();
+					
 					mutexSend.release();
 				}
-
+				output.close();
 				input.close();
 
 				System.out.println("File " + filename + " uploaded!");
@@ -240,7 +240,8 @@ public class WebSocketChatStageControler {
 					e.printStackTrace();
 				}
 
-				(new File(webSocketClient.session.getId() + "/" + filename)).delete();
+				boolean isDeleted = (new File(webSocketClient.session.getId() + "/" + filename)).delete();
+				System.out.println("Deleted ("+filename+"): " + isDeleted);
 			}
 			(new File(webSocketClient.session.getId() + "/")).delete();
 
