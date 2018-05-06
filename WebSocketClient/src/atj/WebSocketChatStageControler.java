@@ -11,6 +11,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.TreeMap;
 import java.util.concurrent.Semaphore;
 
 import javax.websocket.ClientEndpoint;
@@ -47,7 +48,7 @@ public class WebSocketChatStageControler {
 
 	@FXML
 	ListView<String> fileListView;
-	OutputStream userFileStream;
+	TreeMap<String, OutputStream> userFileStreams = new TreeMap<String, OutputStream>();
 
 	@FXML
 	Button btnSet;
@@ -66,7 +67,7 @@ public class WebSocketChatStageControler {
 		user = userTextField.getText() + webSocketClient.session.getId().hashCode();
 		userTextField.setText(user);
 
-		(new File(webSocketClient.session.getId() + "/")).mkdirs();
+		(new File(webSocketClient.session.getId() + File.separator)).mkdirs();
 	}
 
 	@FXML
@@ -184,7 +185,7 @@ public class WebSocketChatStageControler {
 			
 			if (file != null) {
 				try {
-					InputStream initialStream = new FileInputStream(webSocketClient.session.getId() + "/" + originalFilename);
+					InputStream initialStream = new FileInputStream(webSocketClient.session.getId() + File.separator + originalFilename);
 									
 					OutputStream outStream = new FileOutputStream(file);
 					byte[] buffer = new byte[1024*1024];
@@ -232,18 +233,20 @@ public class WebSocketChatStageControler {
 		public void onClose(CloseReason closeReason) {
 			for (String filename : fileListView.getItems()) {
 				try {
-					userFileStream = new FileOutputStream(webSocketClient.session.getId() + "/" + filename, true);
-					userFileStream.close();
+					for( OutputStream stream : userFileStreams.values() )
+					{
+						stream.close();
+					}
 				} catch (FileNotFoundException e) {
 					System.out.println("Couldn't find " + filename + "!");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
-				boolean isDeleted = (new File(webSocketClient.session.getId() + "/" + filename)).delete();
+				boolean isDeleted = (new File(webSocketClient.session.getId() + File.separator + filename)).delete();
 				System.out.println("Deleted ("+filename+"): " + isDeleted);
 			}
-			(new File(webSocketClient.session.getId() + "/")).delete();
+			(new File(webSocketClient.session.getId() + File.separator)).delete();
 
 			System.out.println("Connection is closed: " + closeReason.getReasonPhrase());
 		}
@@ -282,10 +285,12 @@ public class WebSocketChatStageControler {
 
 				//System.out.println(filename);
 				try {
-					userFileStream = new FileOutputStream(webSocketClient.session.getId() + "/" + filename, true);
+					if( !userFileStreams.containsKey(filename) )
+						userFileStreams.put(filename,
+								new FileOutputStream(webSocketClient.session.getId() + File.separator + filename, true));
 
 					byte[] tmp = Arrays.copyOfRange(buf.array(), 255, buf.remaining());
-					userFileStream.write(tmp);
+					userFileStreams.get(filename).write(tmp);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
